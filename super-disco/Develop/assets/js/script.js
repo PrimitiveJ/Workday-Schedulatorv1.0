@@ -31,6 +31,8 @@ function createElements(index) {
      timerElarray.push(timeEl)
      $(col1El).append(timeEl)
 
+     
+
     //Column 2 elements
      let col2El = $("<div></div>")
      $(col2El).addClass("col-sm-10 col-md-10 col-lg-10")
@@ -60,6 +62,27 @@ function createElements(index) {
      $(rowEl).append(col2El)
      $(rowEl).append(col3El)
      $(containerEl).append(rowEl)
+
+     // Add data to attach to each row
+     let rowData = {
+     rowEl : $(rowEl),
+     textareaEl : $(textareaEl),
+     totalHours : totalHours,
+     clockHour: clockHour,
+     currentTimeState: undefined,
+
+
+
+
+         
+        
+    retrievetaskInfo () {
+        return $(textareaEl).val     
+    
+    }
+    }
+    
+
      //event listener for col3buttonel
      $(col3buttonEl).click(saveTasks)
 
@@ -92,34 +115,8 @@ $(document).ready(function() {
     }
 });
 
-function getTimeState (timeCompare) {
-    let currentHour = new Date().getHours();
-    let currentHourSeq= (currentHour +11)%12+1
-    let num = /\d+/.exec(timeCompare)[0];
-    let postfixCompare = /[^\d]+/.exec(timeCompare)[0]; // returns "am" or "pm"
-    let postfixCurrent = currentHour < 12? "am" : "pm";
-    let timeState
-    // console.log(num)
-    // console.log(postfixCompare)
-    // console.log(postfixCurrent)
 
-    if (postfixCompare === "am" && postfixCurrent === "pm") {
-        timeState = "after";
-    } else if (postfixCompare === "pm" && postfixCurrent === "am") {
-        timeState = "before";
-    } else if (postfixCompare === postfixCurrent) {
-        // timeState = currentHourSeq < num? "before" : currentHourSeq === num? "current" : "after";
-        if (currentHourSeq < num%12) {
-            timeState = "before"
-        } else if (currentHourSeq > num%12) {
-            timeState = "after"
-        } else {
-            timeState="current"
-        }
-    }
 
-    return timeState;
-}
 
 function timeClassChange() {
     if (timeState === "current"){

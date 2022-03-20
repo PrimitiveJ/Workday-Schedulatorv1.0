@@ -1,21 +1,30 @@
-rowInfo = new Map()
+
+
+let rowInfo = new Map()
+
+
 setInterval(() => {
+
+    let thedaythatitis = new Date()
+    timetitleEl = $("#currentDay")
+    timetitleEl.text(thedaythatitis.toLocaleTimeString())
+    
    let now = new Date()
     for (let savebutton of rowInfo){
       let rowData = rowInfo.get(savebutton[0])
       updaterowTime(rowData, now);
-     
     }
         
 }, 1000);
+
+
 
 let timerElarray = []
 let timearray = ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm' ];
 function createElements(index, now, savedtasks) {
     //holds value of total hours for each iteration of index
     let totalHours = index%24
-    //display saved tasks
-    displayTasks();
+
     //container Elements
     containerEl = document.getElementsByClassName('container')
     //Row container element
@@ -63,14 +72,14 @@ function createElements(index, now, savedtasks) {
      $(rowEl).append(col3El)
      $(containerEl).append(rowEl)
 
+
+
+
      // Add data to attach to each row
      let rowData = {
-     rowEl : $(rowEl),
-     textareaEl : $(textareaEl),
-     totalHours : totalHours,   
-     retrievetaskInfo () {
-    return $(textareaEl).val     
-    }
+        rowEl : $(rowEl),
+        textareaEl : $(textareaEl),
+        totalHours : totalHours,   
     };
 
     //stores info for each row in rowInfo map
@@ -100,11 +109,6 @@ function createElements(index, now, savedtasks) {
         localStorage.setItem('taskdata', JSON.stringify(oldTasks))
         }
 
-    function displayTasks () {
-        var savedatastring = localStorage.getItem('taskdata')
-        console.log(savedatastring)
-    }
-
         
 }
 $(document).ready(function() {
@@ -129,7 +133,7 @@ function updaterowTime (rowData, currentTime){
     let textareaEl = rowData.textareaEl;
 
     let timeState = currentHour === compareHour
-    ? "current" : currentHour> compareHour
+    ? "current" : currentHour > compareHour
     ? "before" : "after"
 
     if (timeState != rowData.currentTime) {
@@ -139,6 +143,12 @@ function updaterowTime (rowData, currentTime){
         textareaEl.attr("disabled", timeState === 'before')
     }
 }
+
+
+
+
+
+
 
 
 

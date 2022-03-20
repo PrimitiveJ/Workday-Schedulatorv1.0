@@ -1,15 +1,17 @@
 rowInfo = new Map()
 setInterval(() => {
-    now = new Date()
+   let now = new Date()
     for (let savebutton of rowInfo){
-      let rowData = rowInfo[savebutton]
+      let rowData = rowInfo.get(savebutton[0])
+      updaterowTime(rowData, now);
+     
     }
-        updaterowTime(rowData, now);
+        
 }, 1000);
 
 let timerElarray = []
 let timearray = ['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm' ];
-function createElements(index) {
+function createElements(index, now, savedtasks) {
     //holds value of total hours for each iteration of index
     let totalHours = index%24
     //display saved tasks
@@ -27,6 +29,7 @@ function createElements(index) {
      $(timeEl).text(timearray[index])
      timerElarray.push(timeEl)
      $(col1El).append(timeEl)
+
 
      
 
@@ -71,27 +74,32 @@ function createElements(index) {
     };
 
     //stores info for each row in rowInfo map
-    rowInfo.set(savebutton, rowData)
+    rowInfo.set(col3buttonEl[0], rowData)
+
+    //run update row function
+    updaterowTime(rowData, now);
 
      //event listener for col3buttonel
      $(col3buttonEl).click(saveTasks)
+
+     //gets data from localstorage for specific row
+     let myData = savedtasks[index] || {tasks: ""}
+     console.log("old data: ", savedtasks)
+     $(textareaEl).text(myData.tasks)
 
      
 //function to save tasks
      function saveTasks() {
         let inputdata = $(textareaEl).val();
         let timedata = $(timeEl).text();
-        let savedtasks = { tasks:inputdata , time:timedata};
-        let retrieveddata = localStorage.getItem('taskdata');
-        if (!retrieveddata){
-            retrieveddata = []
-        } else {
-            retrieveddata = JSON.parse(retrieveddata)
-        } 
-        console.log(retrieveddata)
-        retrieveddata.push(savedtasks)
-        localStorage.setItem('taskdata', JSON.stringify(retrieveddata))
+        let oldTasks = JSON.parse(localStorage.getItem('taskdata') || "{}")
+        oldTasks[index] = {
+            tasks: inputdata,
+            time: timedata
+        };
+        localStorage.setItem('taskdata', JSON.stringify(oldTasks))
         }
+
     function displayTasks () {
         var savedatastring = localStorage.getItem('taskdata')
         console.log(savedatastring)
@@ -100,8 +108,10 @@ function createElements(index) {
         
 }
 $(document).ready(function() {
-    for (let index = 0; index < 24; index++) {  
-        createElements(index);
+    let now = new Date()
+    let savedtasks = JSON.parse(localStorage.getItem('taskdata') || "{}");
+   for (let index = 0; index < 24; index++) {  
+        createElements(index, now, savedtasks);
     }
 });
 
@@ -118,7 +128,7 @@ function updaterowTime (rowData, currentTime){
     let rowEl = rowData.rowEl;
     let textareaEl = rowData.textareaEl;
 
-    let timeState = current === compareHour
+    let timeState = currentHour === compareHour
     ? "current" : currentHour> compareHour
     ? "before" : "after"
 
@@ -131,10 +141,5 @@ function updaterowTime (rowData, currentTime){
 }
 
 
-//create a current-time object to compare hourly values to 
 
-//change classes of input-fields based on comparisons to currentTime.hour
-let currentHour= new Date().getHours()
-
-//Save textcontent of input groups to local storage for each row (parent container)
 

@@ -14,4 +14,4 @@ Christopher J. Hoke AKA James Primitive
 in March of 2022. 
 #Release: March 2022
 
-![Image of Workday Schedulatron](super-disco\Develop\assets\image\workdayschedulator.jpg)
+![Image of Workday Schedulatron](super-disco/Develop/assets/image/workdayschedulator.jpg)

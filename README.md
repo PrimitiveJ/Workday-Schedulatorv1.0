@@ -8,7 +8,7 @@ Features:
 - Text input field for tasks
 - Sleek UI
 - Easy to use and understand
-
+Link to deployed application: https://primitivej.github.io/Workday-Schedulatorv1.0/
 #developed by 
 Christopher J. Hoke AKA James Primitive 
 in March of 2022. 
